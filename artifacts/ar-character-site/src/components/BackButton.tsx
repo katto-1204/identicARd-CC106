@@ -1,11 +1,25 @@
 import { ChevronLeft } from "lucide-react";
 import { Link } from "wouter";
 
-export default function BackButton() {
+interface BackButtonProps {
+  color?: string;
+}
+
+export default function BackButton({ color = "#F59E0B" }: BackButtonProps) {
   return (
-    <div className="fixed top-6 left-6 z-50">
-      <Link href="/home" className="group flex items-center justify-center w-12 h-12 rounded-full border border-primary/50 bg-background/50 backdrop-blur hover:bg-primary/20 hover:glow-border-hover transition-all duration-300" data-testid="button-back">
-        <ChevronLeft size={24} className="text-primary group-hover:text-white transition-colors" />
+    <div className="fixed top-4 left-4 z-50">
+      <Link
+        href="/home"
+        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300"
+        style={{
+          background: "rgba(10,4,8,0.85)",
+          border: `1px solid ${color}55`,
+          clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
+          backdropFilter: "blur(8px)",
+        }}
+        data-testid="button-back"
+      >
+        <ChevronLeft size={20} style={{ color }} />
       </Link>
     </div>
   );

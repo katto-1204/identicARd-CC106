@@ -7,7 +7,9 @@ export const characters = [
     portfolio: "https://example.com",
     voiceRecord: "/audio/catherine.mp3",
     modelPath: "/models/catherine.glb",
-    color: "#8B5CF6"
+    color: "#F59E0B",
+    colorDim: "rgba(245,158,11,0.15)",
+    colorBorder: "rgba(245,158,11,0.4)",
   },
   {
     id: 2, slug: "char2", name: "XANDER",
@@ -17,26 +19,32 @@ export const characters = [
     portfolio: "https://example.com",
     voiceRecord: "/audio/xander.mp3",
     modelPath: "/models/xander.glb",
-    color: "#7C3AED"
+    color: "#EF4444",
+    colorDim: "rgba(239,68,68,0.15)",
+    colorBorder: "rgba(239,68,68,0.4)",
   },
   {
-    id: 3, slug: "char3", name: "JOEY",
+    id: 3, slug: "char3", name: "ELIZA",
     role: "UI/UX Designer",
-    email: "joey@example.com",
+    email: "eliza@example.com",
     phone: "+639000000003",
     portfolio: "https://example.com",
-    voiceRecord: "/audio/joey.mp3",
-    modelPath: "/models/joey.glb",
-    color: "#6D28D9"
+    voiceRecord: "/audio/eliza.mp3",
+    modelPath: "/models/eliza.glb",
+    color: "#06B6D4",
+    colorDim: "rgba(6,182,212,0.15)",
+    colorBorder: "rgba(6,182,212,0.4)",
   },
   {
-    id: 4, slug: "char4", name: "NORMAN",
+    id: 4, slug: "char4", name: "ASHLEE",
     role: "QA / Tester",
-    email: "norman@example.com",
+    email: "ashlee@example.com",
     phone: "+639000000004",
     portfolio: "https://example.com",
-    voiceRecord: "/audio/norman.mp3",
-    modelPath: "/models/norman.glb",
-    color: "#5B21B6"
+    voiceRecord: "/audio/ashlee.mp3",
+    modelPath: "/models/ashlee.glb",
+    color: "#F43F5E",
+    colorDim: "rgba(244,63,94,0.15)",
+    colorBorder: "rgba(244,63,94,0.4)",
   }
 ];

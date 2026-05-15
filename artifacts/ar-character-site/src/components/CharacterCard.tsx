@@ -6,31 +6,60 @@ interface CharacterCardProps {
 
 export default function CharacterCard({ character }: CharacterCardProps) {
   return (
-    <div className="absolute inset-4 md:inset-12 z-0 opacity-40 mix-blend-screen pointer-events-none">
-      <div className="w-full h-full border border-primary/30 clip-angled-br relative p-8 flex flex-col justify-between overflow-hidden">
-        {/* Decorative Grid background */}
-        <div className="absolute inset-0 grid grid-cols-[repeat(10,1fr)] grid-rows-[repeat(10,1fr)] gap-0 border-[0.5px] border-primary/10 opacity-20">
-          {Array.from({ length: 100 }).map((_, i) => (
-            <div key={i} className="border-[0.5px] border-primary/10" />
-          ))}
-        </div>
-        
+    <div
+      className="absolute inset-4 sm:inset-8 lg:inset-12 z-0 pointer-events-none"
+      style={{ opacity: 0.35, mixBlendMode: "screen" }}
+    >
+      <div
+        className="w-full h-full relative p-6 sm:p-8 flex flex-col justify-between overflow-hidden"
+        style={{
+          border: `1px solid ${character.colorBorder}`,
+          clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
+        }}
+      >
+        {/* Grid background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(${character.color}15 1px, transparent 1px), linear-gradient(90deg, ${character.color}15 1px, transparent 1px)`,
+            backgroundSize: "24px 24px",
+          }}
+        />
+
+        {/* Top row */}
         <div className="relative z-10 flex justify-between items-start">
-          <div className="text-primary font-mono text-xl">
+          <div
+            className="font-mono text-sm sm:text-base font-bold"
+            style={{ color: character.color, fontFamily: "Orbitron, sans-serif" }}
+          >
             NO. 0{character.id}
           </div>
-          <div className="w-16 h-4 border-t border-r border-primary/50" />
+          <div className="w-12 h-3" style={{ borderTop: `1px solid ${character.color}`, borderRight: `1px solid ${character.color}` }} />
         </div>
 
-        <div className="relative z-10 font-black text-[120px] leading-none text-primary/10 rotate-[-90deg] origin-bottom-left absolute bottom-0 left-0 whitespace-nowrap overflow-hidden">
+        {/* Large background name */}
+        <div
+          className="absolute font-black italic text-[80px] sm:text-[120px] leading-none pointer-events-none select-none"
+          style={{
+            color: `${character.color}08`,
+            fontFamily: "Orbitron, sans-serif",
+            bottom: "60px",
+            left: "-10px",
+            whiteSpace: "nowrap",
+          }}
+        >
           {character.name}
         </div>
 
+        {/* Bottom info */}
         <div className="relative z-10 self-end text-right">
-          <div className="w-12 h-12 border-b border-l border-primary/50 inline-block mb-4" />
-          <p className="font-mono text-xs text-primary/60 tracking-widest uppercase">
-            STATUS: ACTIVE<br/>
-            ROLE: {character.role}<br/>
+          <div className="w-8 h-8 inline-block mb-2" style={{ borderBottom: `1px solid ${character.color}`, borderLeft: `1px solid ${character.color}` }} />
+          <p
+            className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase"
+            style={{ color: `${character.color}99` }}
+          >
+            STATUS: ACTIVE<br />
+            ROLE: {character.role}<br />
             ID: {character.slug.toUpperCase()}
           </p>
         </div>
