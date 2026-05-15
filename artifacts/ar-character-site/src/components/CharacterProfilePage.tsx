@@ -58,7 +58,7 @@ export default function CharacterProfilePage() {
         <CharacterCard character={character} />
         
         <div className="w-full h-full relative z-10">
-          <Character3DViewer modelPath={character.modelPath} color={character.color} />
+          <Character3DViewer modelPath={character.modelPath} color={character.color} name={character.name} />
         </div>
       </div>
 
