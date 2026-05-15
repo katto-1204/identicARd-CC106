@@ -1,0 +1,271 @@
+You are a senior frontend developer and creative UI/UX designer.
+
+Build a responsive AR character profile website for a QR-based AR app.
+
+PROJECT CONTEXT:
+I have an AR app. When the user scans a QR code from a character card, it opens a website. The website shows the character’s 3D model and personal information.
+
+The website must have:
+
+1. Splash Loading Screen
+2. Landing Page / Home Page showing all characters
+3. Individual Character Pages
+   - Example routes:
+     /char1
+     /char2
+     /char3
+     /char4
+
+QR BEHAVIOR:
+When a QR code is scanned, it should redirect directly to the correct character profile page.
+
+Example:
+QR for Catherine → /char1
+QR for Xander → /char2
+QR for Joey → /char3
+QR for Norman → /char4
+
+DESIGN STYLE:
+Use the attached reference image as the main design inspiration.
+
+The UI should look futuristic, dark, cinematic, gaming-inspired, and Valorant-like.
+
+Use:
+- Black/dark background
+- Purple accent color
+- White bold italic futuristic typography
+- Angled card containers
+- Thin borders
+- Subtle glowing effects
+- Smooth entrance animations
+- Clean spacing
+- Responsive layout for desktop, tablet, and mobile
+
+SPLASH LOADING SCREEN:
+Create a full-screen splash loading screen before showing the website.
+
+The splash screen should include:
+- Dark background
+- Futuristic logo/title
+- Loading bar
+- Smooth progress animation
+- After loading finishes, redirect to the landing page
+
+LANDING PAGE:
+Create a home page that shows all characters.
+
+The landing page should include:
+- Header/navigation
+- Title: TEAM CORE
+- Subtitle: ARCHITECTS OF THE TERMINAL
+- Left side: group character display or character cards
+- Right side: list of all characters similar to the reference image
+
+Character list:
+1. Catherine — Developer & Designer
+2. Xander — Backend Developer
+3. Joey — UI/UX Designer
+4. Norman — QA / Tester
+
+Each character item should be clickable.
+When clicked, it should open the character profile page.
+
+Example:
+Click Catherine → /char1
+
+CHARACTER PROFILE PAGE:
+Each character page should follow the reference image layout.
+
+LEFT SIDE:
+- Show the character as a 3D model.
+- The 3D model should be displayed on the left side.
+- Behind the 3D model, add a futuristic character card/back card.
+- The card should look like an ID/profile card placed behind the 3D character.
+- The character should appear in front of the card.
+- Add soft glow and shadow behind the model.
+
+Use React Three Fiber or a compatible 3D viewer if this is a React project.
+Allow the model to slightly rotate or float for a dynamic effect.
+
+RIGHT SIDE:
+Replace the title "TEAM CORE" with the selected character’s name.
+
+Example:
+For Catherine page:
+Main title: CATHERINE
+
+Below the name, add a chip/badge that shows the role.
+
+Example:
+Chip: DEVELOPER & DESIGNER
+
+Below the chip, add four large angled boxes similar to the reference image.
+
+The boxes should be:
+1. EMAIL
+2. PLAY VOICE RECORD
+3. PORTFOLIO
+4. CALL
+
+Each box should look like the reference:
+- Dark rectangular angled container
+- Thin border
+- White bold italic label
+- Small icon or dot indicators on the left
+- Action text aligned cleanly
+- Hover effect with purple glow
+
+FUNCTIONALITY:
+EMAIL:
+- Opens the user’s email app using mailto.
+
+PLAY VOICE RECORD:
+- Plays an audio file for the character.
+- Add play/pause behavior.
+- Show active state when playing.
+
+PORTFOLIO:
+- Opens the character’s portfolio link.
+- Use target blank for external portfolio links.
+
+CALL:
+- Opens phone call action using tel:.
+
+BACK BUTTON:
+Add a back button on the character page.
+The back button should redirect back to the home page.
+
+Place it in the top-left corner.
+Style it as a futuristic circular or angled button with a purple arrow icon.
+On click, route back to "/".
+
+ROUTING:
+Use client-side routing.
+
+Routes:
+/
+/char1
+/char2
+/char3
+/char4
+
+DATA STRUCTURE:
+Create a character data array so the UI is reusable.
+
+Each character should have:
+- id
+- slug
+- name
+- role
+- email
+- phone
+- portfolio
+- voiceRecord
+- modelPath
+- cardImage
+- description optional
+
+Example data:
+
+const characters = [
+  {
+    id: 1,
+    slug: "char1",
+    name: "Catherine",
+    role: "Developer & Designer",
+    email: "catherine@example.com",
+    phone: "+639000000001",
+    portfolio: "https://example.com",
+    voiceRecord: "/audio/catherine.mp3",
+    modelPath: "/models/catherine.glb",
+    cardImage: "/cards/catherine-card.png"
+  },
+  {
+    id: 2,
+    slug: "char2",
+    name: "Xander",
+    role: "Backend Developer",
+    email: "xander@example.com",
+    phone: "+639000000002",
+    portfolio: "https://example.com",
+    voiceRecord: "/audio/xander.mp3",
+    modelPath: "/models/xander.glb",
+    cardImage: "/cards/xander-card.png"
+  },
+  {
+    id: 3,
+    slug: "char3",
+    name: "Joey",
+    role: "UI/UX Designer",
+    email: "joey@example.com",
+    phone: "+639000000003",
+    portfolio: "https://example.com",
+    voiceRecord: "/audio/joey.mp3",
+    modelPath: "/models/joey.glb",
+    cardImage: "/cards/joey-card.png"
+  },
+  {
+    id: 4,
+    slug: "char4",
+    name: "Norman",
+    role: "QA / Tester",
+    email: "norman@example.com",
+    phone: "+639000000004",
+    portfolio: "https://example.com",
+    voiceRecord: "/audio/norman.mp3",
+    modelPath: "/models/norman.glb",
+    cardImage: "/cards/norman-card.png"
+  }
+];
+
+RESPONSIVENESS:
+Make everything responsive.
+
+Desktop:
+- 2-column layout
+- 3D character on the left
+- Info/actions on the right
+
+Mobile:
+- Stack layout
+- 3D character/card on top
+- Character name and action boxes below
+- Back button stays fixed or visible at the top
+- Text should remain readable
+- No overflowing elements
+
+ANIMATIONS:
+Add smooth animations:
+- Splash loading progress
+- Fade in on page load
+- Character model floating animation
+- Action boxes sliding in from the right
+- Hover glow on cards and buttons
+- Subtle purple background glow
+
+TECH REQUIREMENTS:
+Use React or Next.js.
+Use Tailwind CSS for styling.
+Use Framer Motion for animations.
+Use React Three Fiber / Drei for 3D model display if using React.
+Use clean reusable components.
+
+Components needed:
+- SplashScreen
+- Layout
+- HomePage
+- CharacterList
+- CharacterProfilePage
+- Character3DViewer
+- ActionBox
+- BackButton
+
+IMPORTANT:
+Do not make it look plain.
+Make it look like a futuristic AR character terminal.
+Use the reference image as the visual direction.
+The individual character page should feel like a character selection/profile screen from a game.
+
+FINAL OUTPUT:
+Generate the full working code.
+Include routing, styling, reusable data, splash loading screen, landing page, character profile pages, action buttons, and responsive layout.

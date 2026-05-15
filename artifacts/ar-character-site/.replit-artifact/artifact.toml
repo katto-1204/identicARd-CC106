@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "AR Character Profiles"
+version = "1.0.0"
+id = "artifacts/ar-character-site"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21121
+
+[services.development]
+run = "pnpm --filter @workspace/ar-character-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ar-character-site", "run", "build" ]
+publicDir = "artifacts/ar-character-site/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21121"
+BASE_PATH = "/"

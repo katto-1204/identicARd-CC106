@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --font-sans: 'Rajdhani', sans-serif;
+  --font-display: 'Orbitron', sans-serif;
+}
+
+:root {
+  --background: 240 20% 3%;
+  --foreground: 0 0% 98%;
+  --border: 260 70% 30%;
+  --input: 260 70% 30%;
+  --ring: 260 70% 50%;
+  --primary: 260 70% 50%;
+  --primary-foreground: 0 0% 100%;
+  --card: 240 20% 5%;
+  --card-foreground: 0 0% 98%;
+  --muted: 240 10% 15%;
+  --muted-foreground: 240 10% 60%;
+  --accent: 260 80% 60%;
+  --accent-foreground: 0 0% 100%;
+
+  --app-font-sans: 'Rajdhani', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: Menlo, monospace;
+}
+
+.dark {
+  --background: 240 20% 3%;
+  --foreground: 0 0% 98%;
+  --border: 260 70% 30%;
+  --input: 260 70% 30%;
+  --ring: 260 70% 50%;
+  --primary: 260 70% 50%;
+  --primary-foreground: 0 0% 100%;
+  --card: 240 20% 5%;
+  --card-foreground: 0 0% 98%;
+  --muted: 240 10% 15%;
+  --muted-foreground: 240 10% 60%;
+  --accent: 260 80% 60%;
+  --accent-foreground: 0 0% 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground overflow-x-hidden;
+    background-image: radial-gradient(circle at 50% 50%, rgba(100, 40, 200, 0.05) 0%, transparent 100%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+/* Custom futuristic utilities */
+.clip-angled {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.clip-angled-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+  background-size: 100% 4px;
+  z-index: 50;
+  opacity: 0.3;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary));
+}
+
+.glow-border {
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3), inset 0 0 10px rgba(124, 58, 237, 0.3);
+  border: 1px solid rgba(124, 58, 237, 0.5);
+}
+
+.glow-border-hover:hover {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.6), inset 0 0 15px rgba(124, 58, 237, 0.4);
+  border: 1px solid rgba(124, 58, 237, 0.8);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(124, 58, 237, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(124, 58, 237, 0.2); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
