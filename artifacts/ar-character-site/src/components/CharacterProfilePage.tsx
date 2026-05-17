@@ -40,7 +40,7 @@ export default function CharacterProfilePage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col lg:flex-row relative overflow-hidden"
+      className="min-h-screen flex flex-col lg:flex-row relative overflow-x-hidden"
       style={{ background: "#07080f" }}
       data-testid={`page-profile-${character.slug}`}
     >
@@ -48,13 +48,16 @@ export default function CharacterProfilePage() {
 
       {/* Left: Visual */}
       <div
-        className="w-full lg:w-1/2 relative flex items-center justify-center"
-        style={{ minHeight: "clamp(320px, 50vw, 560px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        className="w-full lg:w-1/2 relative flex items-center justify-center flex-shrink-0"
+        style={{
+          minHeight: "clamp(280px, 55vw, 560px)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+        }}
       >
         {/* Top Accent Line */}
         <div className="absolute top-0 left-0 right-0 h-1 z-20" style={{ background: character.gradient }} />
 
-        {/* Soft radial gradient bg */}
+        {/* Radial gradient bg */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -65,11 +68,11 @@ export default function CharacterProfilePage() {
 
         {/* Geometric Decor */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute w-[40vw] h-[40vw] rounded-full top-1/4 -left-20" style={{ border: `1px solid ${character.colorFrom}`, opacity: 0.05 }} />
-          <div className="absolute w-[30vw] h-[30vw] rounded-full bottom-10 -right-10" style={{ border: `1px solid ${character.colorTo}`, opacity: 0.05 }} />
+          <div className="absolute rounded-full" style={{ width: "clamp(120px, 35vw, 300px)", height: "clamp(120px, 35vw, 300px)", top: "10%", left: "-10%", border: `1px solid ${character.colorFrom}`, opacity: 0.05 }} />
+          <div className="absolute rounded-full" style={{ width: "clamp(80px, 25vw, 220px)", height: "clamp(80px, 25vw, 220px)", bottom: "5%", right: "-5%", border: `1px solid ${character.colorTo}`, opacity: 0.05 }} />
         </div>
 
-        <div className="w-full h-full relative z-10" style={{ minHeight: "clamp(320px, 50vw, 560px)" }}>
+        <div className="w-full h-full relative z-10" style={{ minHeight: "clamp(280px, 55vw, 560px)" }}>
           <Character3DViewer
             modelPath={character.modelPath}
             gradient={character.gradient}
@@ -82,17 +85,17 @@ export default function CharacterProfilePage() {
 
       {/* Right: Info */}
       <div
-        className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-10 lg:px-14 py-10 lg:py-14 relative z-10 overflow-y-auto"
+        className="w-full lg:w-1/2 flex flex-col justify-center px-5 sm:px-8 lg:px-14 py-8 lg:py-14 relative z-10"
         style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}
       >
-        {/* Large Faded Number */}
+        {/* Large Faded Number — hidden on very small screens, scaled on medium+ */}
         <div
-          className="absolute top-10 right-10 pointer-events-none select-none"
+          className="absolute top-4 right-4 sm:top-8 sm:right-8 pointer-events-none select-none"
           style={{
             fontFamily: "Orbitron, sans-serif",
             fontWeight: 900,
             fontStyle: "italic",
-            fontSize: "12rem",
+            fontSize: "clamp(4rem, 18vw, 12rem)",
             color: "#fff",
             opacity: 0.04,
             lineHeight: 0.8,
@@ -101,16 +104,18 @@ export default function CharacterProfilePage() {
           0{character.id}
         </div>
 
-        {/* Role badge */}
+        {/* Role badge + Name */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="mb-8 relative z-10"
+          className="mb-6 sm:mb-8 relative z-10"
         >
           <div
-            className="inline-block px-4 py-1.5 mb-4 text-[10px] font-bold tracking-widest uppercase rounded-full"
+            className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 mb-3 sm:mb-4 font-bold uppercase rounded-full"
             style={{
+              fontSize: "clamp(8px, 1.5vw, 10px)",
+              letterSpacing: "0.15em",
               background: `linear-gradient(135deg, ${character.colorFrom}33, ${character.colorTo}33)`,
               border: `1px solid ${character.colorBorder}`,
               color: character.colorFrom,
@@ -120,16 +125,13 @@ export default function CharacterProfilePage() {
           </div>
 
           <div className="flex relative">
-            {/* Decorative Left Border */}
-            <div className="w-1 rounded-full mr-4 self-stretch my-2" style={{ background: character.gradient }} />
-            
-            {/* Name with gradient */}
+            <div className="w-1 rounded-full mr-3 sm:mr-4 self-stretch my-1" style={{ background: character.gradient, flexShrink: 0 }} />
             <h1
               style={{
                 fontFamily: "Orbitron, sans-serif",
                 fontWeight: 900,
                 fontStyle: "italic",
-                fontSize: "clamp(2.5rem, 6.5vw, 5rem)",
+                fontSize: "clamp(2rem, 8vw, 5rem)",
                 lineHeight: 0.95,
                 background: character.gradient,
                 WebkitBackgroundClip: "text",
@@ -144,12 +146,12 @@ export default function CharacterProfilePage() {
             </h1>
           </div>
 
-          <div className="h-[1px] w-full mt-10" style={{ background: `linear-gradient(90deg, ${character.colorFrom}88, transparent)` }} />
+          <div className="h-px w-full mt-6 sm:mt-10" style={{ background: `linear-gradient(90deg, ${character.colorFrom}88, transparent)` }} />
         </motion.div>
 
         {/* Actions */}
         <motion.div
-          className="flex flex-col gap-4 w-full max-w-lg relative z-10"
+          className="flex flex-col gap-3 sm:gap-4 w-full max-w-lg relative z-10"
           initial="hidden"
           animate="visible"
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
@@ -165,24 +167,26 @@ export default function CharacterProfilePage() {
                 onClick={action.onClick}
                 className="w-full text-left group relative overflow-hidden card-glass flex items-center"
                 style={{
-                  borderLeft: `3px solid ${action.isActive ? character.colorFrom : 'transparent'}`,
+                  borderLeft: `3px solid ${action.isActive ? character.colorFrom : "transparent"}`,
                   transition: "all 0.2s",
                 }}
-                variants={{ hover: { x: 6, backgroundColor: character.colorDim, borderLeftColor: character.colorFrom } }}
+                variants={{ hover: { x: 4, backgroundColor: character.colorDim, borderLeftColor: character.colorFrom } }}
                 data-testid={`action-${action.label.toLowerCase().replace(/\s+/g, "-")}`}
               >
-                <div className="flex items-center px-4 py-4 w-full gap-4">
-                  <div className="w-10 h-10 rounded flex items-center justify-center shrink-0" style={{ background: character.colorDim, color: character.colorFrom }}>
-                    <action.icon size={18} />
+                <div className="flex items-center px-3 sm:px-4 py-3 sm:py-4 w-full gap-3 sm:gap-4">
+                  <div
+                    className="rounded flex items-center justify-center shrink-0"
+                    style={{ width: "clamp(32px, 6vw, 40px)", height: "clamp(32px, 6vw, 40px)", background: character.colorDim, color: character.colorFrom }}
+                  >
+                    <action.icon size={16} />
                   </div>
-                  
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <span
                       style={{
                         fontFamily: "Orbitron, sans-serif",
                         fontWeight: 700,
                         fontStyle: "italic",
-                        fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)",
+                        fontSize: "clamp(0.75rem, 2.5vw, 1.1rem)",
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
                         color: "#fff",
@@ -191,13 +195,10 @@ export default function CharacterProfilePage() {
                       {action.label}
                     </span>
                   </div>
-
                   {action.isActive ? (
                     <div className="w-2 h-2 rounded-full animate-pulse flex-shrink-0" style={{ background: character.colorFrom }} />
                   ) : (
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white/50 text-xl">
-                      ›
-                    </div>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white/50 text-xl flex-shrink-0">›</div>
                   )}
                 </div>
               </motion.button>
@@ -206,10 +207,10 @@ export default function CharacterProfilePage() {
         </motion.div>
 
         <motion.div
-          className="mt-12 pt-4 flex justify-between relative z-10"
+          className="mt-8 sm:mt-12 pt-4 flex justify-between relative z-10"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.06)",
-            fontSize: 9,
+            fontSize: "clamp(7px, 1.3vw, 9px)",
             fontFamily: "Menlo, monospace",
             letterSpacing: "0.15em",
             color: "rgba(255,255,255,0.18)",
