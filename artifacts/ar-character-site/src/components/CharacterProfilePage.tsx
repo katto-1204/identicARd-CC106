@@ -1,6 +1,6 @@
 import { useParams, Redirect } from "wouter";
 import { useState, useRef } from "react";
-import { Mail, Volume2, Square, Phone, ExternalLink, ChevronLeft } from "lucide-react";
+import { Mail, Volume2, Square, Github, ExternalLink, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { characters } from "../data/characters";
@@ -56,10 +56,12 @@ export default function CharacterProfilePage() {
       style: "dark",
     },
     {
-      label: "CALL",
-      sub: character.phone,
-      icon: Phone,
-      onClick: () => window.open(`tel:${character.phone}`),
+      label: "GITHUB",
+      sub: character.github || "No github provided",
+      icon: Github,
+      onClick: () => {
+        if (character.github) window.open(`https://github.com/${character.github}`, "_blank");
+      },
       style: "dark",
     },
   ];
@@ -117,14 +119,31 @@ export default function CharacterProfilePage() {
         </div>
 
         {/* Character viewer */}
-        <div className="relative z-10 w-full" style={{ maxWidth: 520 }}>
-          <Character3DViewer
-            modelPath={character.modelPath}
-            gradient={character.gradient}
-            colorFrom={character.colorFrom}
-            colorTo={character.colorTo}
-            name={character.name}
-          />
+        <div className="relative z-10 w-full flex justify-center items-center" style={{ maxWidth: 520, minHeight: 400 }}>
+          {/* Card behind the model with CSS 3D tilt */}
+          {(character as any).cardImage && (
+            <img 
+              src={(character as any).cardImage} 
+              alt={`${character.name} Card`} 
+              className="absolute z-0 w-full max-w-[280px] lg:max-w-[340px] rounded-2xl shadow-2xl"
+              style={{ 
+                top: "50%", 
+                transform: "translateY(-50%) perspective(1000px) rotateX(30deg) scale(0.95)", 
+                border: `1px solid ${character.colorBorder}`,
+                transformOrigin: "bottom" 
+              }}
+            />
+          )}
+          <div className="relative z-10 w-full" style={{ height: "100%", minHeight: 400 }}>
+            <Character3DViewer
+              modelPath={character.modelPath}
+              cardImage={(character as any).cardImage}
+              gradient={character.gradient}
+              colorFrom={character.colorFrom}
+              colorTo={character.colorTo}
+              name={character.name}
+            />
+          </div>
         </div>
 
         {/* Bottom-left: big name overlay */}
