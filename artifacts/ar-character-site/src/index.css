@@ -3,6 +3,24 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
+.transition-name {
+  font-size: clamp(2.35rem, 13vw, 11rem);
+}
+
+@media (max-width: 640px) {
+  .transition-name {
+    font-size: clamp(2rem, 15vw, 4.25rem);
+    letter-spacing: 0.01em !important;
+    max-width: 88vw !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .transition-name {
+    font-size: clamp(1.8rem, 13vw, 3.25rem);
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
