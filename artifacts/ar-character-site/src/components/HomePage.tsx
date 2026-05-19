@@ -7,57 +7,21 @@ import LaserFlow from "./LaserFlow";
 export default function HomePage() {
   const [, setLocation] = useLocation();
   const [transitioningChar, setTransitioningChar] = useState<any | null>(null);
-  const [terminalLogs, setTerminalLogs] = useState<string[]>([]);
-  const [progress, setProgress] = useState(0);
+  const terminalLogs: string[] = [];
+  const progress = 0;
 
   const handleCharacterClick = (char: any) => {
     setTransitioningChar(char);
-    setTerminalLogs([]);
-    setProgress(0);
   };
 
   useEffect(() => {
     if (!transitioningChar) return;
 
-    // Stream hacker-styled decryption terminal logs
-    const logs = [
-      `> INITIALIZING SECURE LINK...`,
-      `> STATUS: ESTABLISHED`,
-      `> FETCHING METADATA FOR ID: 0${transitioningChar.id}`,
-      `> BYPASSING DOSSIER ENCRYPTION SHELL...`,
-      `> DOWNLOADING VIRTUAL ENGINE RENDERS...`,
-      `> ACCESS GRANTED. DECRYPTING FOR ${transitioningChar.name}...`
-    ];
-
-    let logIndex = 0;
-    const logInterval = setInterval(() => {
-      if (logIndex < logs.length) {
-        setTerminalLogs(prev => [...prev, logs[logIndex]]);
-        logIndex++;
-      } else {
-        clearInterval(logInterval);
-      }
-    }, 150);
-
-    // Fast loading progress bar
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 80);
-
-    // Complete transition and navigate after 1.25s
     const timeout = setTimeout(() => {
       setLocation(`/${transitioningChar.slug}`);
     }, 1250);
 
     return () => {
-      clearInterval(logInterval);
-      clearInterval(progressInterval);
       clearTimeout(timeout);
     };
   }, [transitioningChar, setLocation]);
@@ -332,9 +296,9 @@ export default function HomePage() {
                 }}
               />
 
-              <div className="relative z-10 w-full max-w-xl px-6 flex flex-col items-center select-none">
+              <div className="relative z-10 w-full px-6 flex flex-col items-center select-none">
                 {/* Meta secure dossier details */}
-                <div className="flex items-center gap-3 mb-6" style={{ fontFamily: "Orbitron, sans-serif", fontSize: 10, letterSpacing: "0.25em" }}>
+                <div className="hidden" style={{ fontFamily: "Orbitron, sans-serif", fontSize: 10, letterSpacing: "0.25em" }}>
                   <span style={{ color: "rgba(255,255,255,0.3)" }}>SECURE DOSSIER TERMINAL</span>
                   <span style={{ color: transitioningChar.colorFrom }}>● ACTIVE CONNECT</span>
                 </div>
@@ -342,17 +306,16 @@ export default function HomePage() {
                 {/* Massive Glitch-styled Custom Name */}
                 <motion.h1
                   style={{
-                    fontFamily: "Orbitron, sans-serif",
+                    fontFamily: "Poppins, sans-serif",
                     fontWeight: 900,
                     fontStyle: "italic",
-                    fontSize: "clamp(2.5rem, 8vw, 5.5rem)",
+                    fontSize: "clamp(4.5rem, 16vw, 11rem)",
                     letterSpacing: "0.08em",
                     color: "#fff",
                     textShadow: `0 0 24px ${transitioningChar.colorFrom}ee, 0 0 45px ${transitioningChar.colorFrom}55`,
                     textTransform: "uppercase",
                     textAlign: "center",
-                    lineHeight: 1,
-                    marginBottom: 10
+                    lineHeight: 0.9,
                   }}
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -369,14 +332,15 @@ export default function HomePage() {
                     letterSpacing: "0.15em",
                     color: "rgba(255,255,255,0.4)",
                     textTransform: "uppercase",
-                    marginBottom: 35
+                    marginBottom: 35,
+                    display: "none"
                   }}
                 >
                   {transitioningChar.role}
                 </p>
 
                 {/* Decrypting Progress Bar */}
-                <div className="w-full max-w-xs mb-8">
+                <div className="hidden">
                   <div className="flex justify-between items-center mb-2" style={{ fontFamily: "Menlo, monospace", fontSize: 9, color: "rgba(255,255,255,0.4)" }}>
                     <span className="tracking-wider">DECRYPTING PROFILE METRICS...</span>
                     <span style={{ color: transitioningChar.colorFrom }}>{progress}%</span>
@@ -393,7 +357,7 @@ export default function HomePage() {
 
                 {/* Live digital terminal output streaming logs */}
                 <div 
-                  className="w-full bg-black/55 border border-white/5 rounded-xl p-4 font-mono text-[9px] sm:text-[11px] leading-relaxed text-left flex flex-col gap-2 h-32 overflow-hidden"
+                  className="hidden"
                   style={{
                     boxShadow: "inset 0 4px 20px rgba(0,0,0,0.95)",
                     backdropFilter: "blur(12px)"
