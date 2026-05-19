@@ -9,7 +9,8 @@ import Antigravity from "./Antigravity";
 
 export default function CharacterProfilePage() {
   const { slug } = useParams();
-  const character = characters.find((c) => c.slug === slug);
+  const normalizedSlug = slug?.toLowerCase();
+  const character = characters.find((c) => c.slug === normalizedSlug);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isCardStraight, setIsCardStraight] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
