@@ -306,16 +306,17 @@ export default function HomePage() {
                 {/* Massive Glitch-styled Custom Name */}
                 <motion.h1
                   style={{
-                    fontFamily: "Poppins, sans-serif",
+                    fontFamily: "Orbitron, sans-serif",
                     fontWeight: 900,
                     fontStyle: "italic",
                     fontSize: "clamp(4.5rem, 16vw, 11rem)",
-                    letterSpacing: "0.08em",
+                    letterSpacing: "0.03em",
                     color: "#fff",
                     textShadow: `0 0 24px ${transitioningChar.colorFrom}ee, 0 0 45px ${transitioningChar.colorFrom}55`,
                     textTransform: "uppercase",
                     textAlign: "center",
                     lineHeight: 0.9,
+                    transform: "skewX(-10deg)",
                   }}
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
