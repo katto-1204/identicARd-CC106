@@ -1,6 +1,6 @@
 export const characters = [
   {
-    id: 1, slug: "char1", name: "CATHERINE",
+    id: 1, slug: "CHARCATHERINE", name: "CATHERINE",
     fullName: "Catherine Arnado",
     nickname: "KATTO",
     role: "Developer & Designer",
@@ -18,7 +18,7 @@ export const characters = [
     colorBorder: "rgba(239,68,68,0.3)",
   },
   {
-    id: 2, slug: "char2", name: "XANDER",
+    id: 2, slug: "CHARXAND", name: "XANDER",
     fullName: "Xander Jyle P. Palma",
     nickname: "Xan",
     role: "Backend Developer",
@@ -36,7 +36,7 @@ export const characters = [
     colorBorder: "rgba(59,130,246,0.3)",
   },
   {
-    id: 3, slug: "char3", name: "ELIZA",
+    id: 3, slug: "CHARELIZA", name: "ELIZA",
     fullName: "Eliza Marie M. Abing",
     nickname: "eli",
     role: "UI/UX Designer",
@@ -54,7 +54,7 @@ export const characters = [
     colorBorder: "rgba(34,197,94,0.3)",
   },
   {
-    id: 4, slug: "char4", name: "ASHLEE",
+    id: 4, slug: "CHARASHLEE", name: "ASHLEE",
     fullName: "Ashlee M. Madriñan",
     nickname: "ashriri",
     role: "QA / Tester",

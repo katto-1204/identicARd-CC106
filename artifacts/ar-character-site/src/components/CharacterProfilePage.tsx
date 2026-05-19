@@ -143,20 +143,58 @@ export default function CharacterProfilePage() {
         >
           {/* Card behind the model with CSS 3D tilt */}
           {(character as any).cardImage && (
-            <img
-              src={(character as any).cardImage}
-              alt={`${character.name} Card`}
-              className="absolute z-0 w-full max-w-[280px] lg:max-w-[340px] rounded-2xl shadow-2xl"
-              style={{
-                top: "50%",
-                transform: `translateY(${isCardStraight ? "-55%" : "-50%"}) perspective(1000px) rotateX(${isCardStraight ? 0 : 30}deg) scale(0.95)`,
-                border: `1px solid ${character.colorBorder}`,
-                transformOrigin: "bottom",
-                transition: "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)"
-              }}
-            />
+            <>
+              {/* Tilted name text backdrop (physically on the back of the card) */}
+              <div 
+                className="absolute z-0 pointer-events-none select-none text-center flex flex-col items-center justify-center"
+                style={{ 
+                  top: "50%", 
+                  left: "50%",
+                  transform: `translate(-50%, ${isCardStraight ? "-58%" : "-53%"}) perspective(1000px) rotateX(${isCardStraight ? 0 : 30}deg) scale(1.15)`, 
+                  transformOrigin: "bottom",
+                  transition: "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
+                  width: "100%",
+                  maxWidth: "400px",
+                }}
+              >
+                <p style={{ fontSize: "clamp(8px, 1.2vw, 10px)", letterSpacing: "0.3em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", fontFamily: "Menlo, monospace", marginBottom: 6 }}>
+                  TEAM CORE — ARCHITECTS OF THE TERMINAL
+                </p>
+                <h1
+                  style={{
+                    fontFamily: "Orbitron, sans-serif",
+                    fontWeight: 900,
+                    fontStyle: "italic",
+                    fontSize: "clamp(2rem, 6vw, 4.5rem)",
+                    lineHeight: 0.9,
+                    background: character.gradient,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    letterSpacing: "0.02em",
+                    textTransform: "uppercase",
+                    opacity: 0.65,
+                  }}
+                >
+                  {character.name}
+                </h1>
+              </div>
+
+              <img 
+                src={(character as any).cardImage} 
+                alt={`${character.name} Card`} 
+                className="absolute z-10 w-full max-w-[280px] lg:max-w-[340px] rounded-2xl shadow-2xl"
+                style={{ 
+                  top: "50%", 
+                  transform: `translateY(${isCardStraight ? "-55%" : "-50%"}) perspective(1000px) rotateX(${isCardStraight ? 0 : 30}deg) scale(0.95)`, 
+                  border: `1px solid ${character.colorBorder}`,
+                  transformOrigin: "bottom",
+                  transition: "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)"
+                }}
+              />
+            </>
           )}
-          <div className="relative z-10 w-full" style={{ height: "100%", minHeight: 400 }}>
+          <div className="relative z-20 w-full" style={{ height: "100%", minHeight: 400 }}>
             <Character3DViewer
               modelPath={character.modelPath}
               cardImage={(character as any).cardImage}
@@ -166,31 +204,6 @@ export default function CharacterProfilePage() {
               name={character.name}
             />
           </div>
-        </div>
-
-        {/* Bottom-left: big name overlay */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 px-6 pb-6 lg:pb-10 pointer-events-none select-none">
-          <p style={{ fontSize: "clamp(8px, 1.5vw, 10px)", letterSpacing: "0.3em", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", fontFamily: "Menlo, monospace", marginBottom: 4 }}>
-            TEAM CORE — ARCHITECTS OF THE TERMINAL
-          </p>
-          <h1
-            style={{
-              fontFamily: "Orbitron, sans-serif",
-              fontWeight: 900,
-              fontStyle: "italic",
-              fontSize: "clamp(2.5rem, 8vw, 6rem)",
-              lineHeight: 0.9,
-              background: character.gradient,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              letterSpacing: "0.02em",
-              textTransform: "uppercase",
-              opacity: 0.85,
-            }}
-          >
-            {character.name}
-          </h1>
         </div>
       </div>
 
