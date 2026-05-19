@@ -46,13 +46,27 @@ export default function CharacterProfilePage() {
     }
   };
 
+  const openExternal = (url: string) => {
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) {
+      window.location.href = url;
+    }
+  };
+
+  const openEmail = () => {
+    window.location.href = `mailto:${character.email}`;
+  };
+
+  const portfolioUrl = character.portfolio;
+  const githubUrl = character.github ? `https://github.com/${character.github}` : "";
+
   // 4 action cards — each gets a distinct visual treatment
   const actions = [
     {
       label: "EMAIL",
       sub: character.email,
       icon: Mail,
-      onClick: () => window.open(`mailto:${character.email}`),
+      onClick: openEmail,
       style: "primary", // character gradient bg
     },
     {
@@ -65,9 +79,9 @@ export default function CharacterProfilePage() {
     },
     {
       label: "PORTFOLIO",
-      sub: "View live work",
+      sub: portfolioUrl,
       icon: ExternalLink,
-      onClick: () => window.open(character.portfolio, "_blank"),
+      onClick: () => openExternal(portfolioUrl),
       style: "dark",
     },
     {
@@ -75,7 +89,7 @@ export default function CharacterProfilePage() {
       sub: character.github || "No github provided",
       icon: Github,
       onClick: () => {
-        if (character.github) window.open(`https://github.com/${character.github}`, "_blank");
+        if (githubUrl) openExternal(githubUrl);
       },
       style: "dark",
     },
