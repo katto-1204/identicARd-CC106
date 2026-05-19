@@ -1,14 +1,84 @@
-import { Link } from "wouter";
-import { motion } from "framer-motion";
+import { Link, useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { characters } from "../data/characters";
+import LaserFlow from "./LaserFlow";
 
 export default function HomePage() {
+  const [, setLocation] = useLocation();
+  const [transitioningChar, setTransitioningChar] = useState<any | null>(null);
+  const [terminalLogs, setTerminalLogs] = useState<string[]>([]);
+  const [progress, setProgress] = useState(0);
+
+  const handleCharacterClick = (char: any) => {
+    setTransitioningChar(char);
+    setTerminalLogs([]);
+    setProgress(0);
+  };
+
+  useEffect(() => {
+    if (!transitioningChar) return;
+
+    // Stream hacker-styled decryption terminal logs
+    const logs = [
+      `> INITIALIZING SECURE LINK...`,
+      `> STATUS: ESTABLISHED`,
+      `> FETCHING METADATA FOR ID: 0${transitioningChar.id}`,
+      `> BYPASSING DOSSIER ENCRYPTION SHELL...`,
+      `> DOWNLOADING VIRTUAL ENGINE RENDERS...`,
+      `> ACCESS GRANTED. DECRYPTING FOR ${transitioningChar.name}...`
+    ];
+
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+      if (logIndex < logs.length) {
+        setTerminalLogs(prev => [...prev, logs[logIndex]]);
+        logIndex++;
+      } else {
+        clearInterval(logInterval);
+      }
+    }, 150);
+
+    // Fast loading progress bar
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 80);
+
+    // Complete transition and navigate after 1.25s
+    const timeout = setTimeout(() => {
+      setLocation(`/${transitioningChar.slug}`);
+    }, 1250);
+
+    return () => {
+      clearInterval(logInterval);
+      clearInterval(progressInterval);
+      clearTimeout(timeout);
+    };
+  }, [transitioningChar, setLocation]);
   return (
     <div
-      className="min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col relative overflow-hidden"
       style={{ background: "#07080f" }}
       data-testid="page-home"
     >
+      {/* LaserFlow Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
+        <LaserFlow
+          color="#ff0080"
+          fogIntensity={0.65}
+          flowSpeed={0.35}
+          wispDensity={1.2}
+          mouseTiltStrength={0.015}
+          verticalSizing={2.2}
+          horizontalSizing={0.6}
+        />
+      </div>
       {/* Header */}
       <header
         className="flex-shrink-0 px-4 sm:px-8 py-3 sm:py-4 flex justify-between items-center sticky top-0 z-20"
@@ -43,15 +113,23 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Cards grid: 2 cols on mobile/tablet, 4 cols on desktop */}
-      <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-white/[0.06]">
-        {characters.map((char, i) => (
-          <Link
-            key={char.id}
-            href={`/${char.slug}`}
-            data-testid={`card-char-${char.slug}`}
-            style={{ display: "block" }}
-          >
+      {/* Centered dashboard layout to prevent stretching and remove bottom space */}
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 z-10 w-full">
+        <div className="w-full max-w-7xl grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-white/[0.06] border border-white/[0.06] rounded-2xl overflow-hidden bg-black/25 backdrop-blur-md shadow-2xl">
+          {characters.map((char, i) => (
+            <div
+              key={char.id}
+              onClick={() => handleCharacterClick(char)}
+              data-testid={`card-char-${char.slug}`}
+              style={{ display: "block" }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleCharacterClick(char);
+                }
+              }}
+            >
             <motion.div
               className="relative flex flex-col overflow-hidden cursor-pointer h-full"
               style={{
@@ -88,90 +166,27 @@ export default function HomePage() {
                 variants={{ hover: { height: "clamp(175px, 38vw, 450px)" } }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Geometric Decor */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full -top-10 -right-10" style={{ background: char.gradient, opacity: 0.08 }} />
-                  <div className="absolute w-full h-6 -bottom-4 -left-10 rotate-12" style={{ background: char.gradient, opacity: 0.08 }} />
-                </div>
-
-                {/* Gradient bg */}
-                <motion.div
-                  className="absolute inset-0 z-0"
-                  style={{ background: `linear-gradient(160deg, ${char.colorFrom}dd 0%, ${char.colorTo}66 60%, #07080f 100%)` }}
+                {/* Card Graphic Backdrop */}
+                <motion.img
+                  src={char.cardImage}
+                  alt={`${char.name} Preview`}
+                  className="absolute inset-0 w-full h-full object-cover z-0"
+                  variants={{ hover: { scale: 1.08 } }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                 />
 
-                {/* Diagonal Accent Stripe */}
-                <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
-                  <div className="w-[150%] h-[2px] opacity-30 rotate-[30deg]" style={{ background: char.gradient }} />
-                </div>
-
-                {/* IDENTICARD watermark */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none select-none z-0"
-                  style={{ opacity: 0.1 }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "Orbitron, sans-serif",
-                      fontWeight: 900,
-                      fontStyle: "italic",
-                      fontSize: "clamp(1.8rem, 6vw, 6rem)",
-                      color: "#fff",
-                      whiteSpace: "nowrap",
-                      letterSpacing: "-0.02em",
-                      transform: "rotate(-8deg)",
-                    }}
-                  >
-                    IDENTICARD
-                  </span>
-                </div>
+                {/* Subtle themed vignette */}
+                <div 
+                  className="absolute inset-0 z-10 pointer-events-none opacity-40 mix-blend-multiply"
+                  style={{ background: `radial-gradient(circle at center, transparent 30%, #07080f 120%)` }}
+                />
 
                 {/* Number badge */}
-                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1.5 z-20">
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1.5 z-20 px-2 py-0.5 rounded-md" style={{ background: "rgba(7,8,15,0.6)", backdropFilter: "blur(4px)" }}>
                   <div style={{ width: 6, height: 6, borderRadius: "50%", background: char.gradient, flexShrink: 0 }} />
-                  <span style={{ fontFamily: "Orbitron, sans-serif", fontSize: "clamp(7px, 1.5vw, 9px)", fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.2em" }}>
+                  <span style={{ fontFamily: "Orbitron, sans-serif", fontSize: "clamp(7px, 1.5vw, 9px)", fontWeight: 700, color: "rgba(255,255,255,0.7)", letterSpacing: "0.2em" }}>
                     0{char.id}
                   </span>
-                </div>
-
-                {/* Avatar */}
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center items-end z-20">
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ marginBottom: "clamp(18px, 4vw, 40px)" }}
-                    className="relative flex items-center justify-center"
-                  >
-                    {/* Glow Ring */}
-                    <div
-                      className="absolute"
-                      style={{
-                        width: "clamp(52px, 11vw, 110px)",
-                        height: "clamp(52px, 11vw, 110px)",
-                        border: `1px solid ${char.colorFrom}`,
-                        opacity: 0.4,
-                        clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                        left: "50%",
-                        top: "50%",
-                        transform: "translate(-50%, -50%)",
-                      }}
-                    />
-                    <div
-                      className="flex items-center justify-center font-black relative"
-                      style={{
-                        width: "clamp(46px, 10vw, 104px)",
-                        height: "clamp(46px, 10vw, 104px)",
-                        background: char.gradient,
-                        fontFamily: "Orbitron, sans-serif",
-                        fontSize: "clamp(0.75rem, 2vw, 2rem)",
-                        color: "#fff",
-                        clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                        boxShadow: `0 6px 24px ${char.colorFrom}55`,
-                      }}
-                    >
-                      {char.name.slice(0, 2)}
-                    </div>
-                  </motion.div>
                 </div>
 
                 {/* Bottom fade */}
@@ -269,9 +284,137 @@ export default function HomePage() {
                 </div>
               </motion.div>
             </motion.div>
-          </Link>
+          </div>
         ))}
+        </div>
+      </main>
+
+        {/* Cyberpunk Loading / Decrypting Transition Overlay */}
+        <AnimatePresence>
+          {transitioningChar && (
+            <motion.div
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              {/* Cyber Scanline Grid Backdrop */}
+              <div 
+                className="absolute inset-0 pointer-events-none opacity-[0.05]"
+                style={{
+                  backgroundImage: "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px)",
+                  backgroundSize: "100% 4px",
+                }}
+              />
+              {/* Sweeping Scanner laser line */}
+              <motion.div
+                className="absolute left-0 right-0 h-[2px] z-10 opacity-35"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${transitioningChar.colorFrom}, transparent)`,
+                  boxShadow: `0 0 16px ${transitioningChar.colorFrom}, 0 0 8px ${transitioningChar.colorFrom}`,
+                }}
+                animate={{
+                  top: ["0%", "100%"],
+                }}
+                transition={{
+                  duration: 1.4,
+                  ease: "linear",
+                  repeat: Infinity,
+                }}
+              />
+
+              {/* Glowing themed radial ambient spot */}
+              <div 
+                className="absolute inset-0 z-0 opacity-25 filter blur-[90px]"
+                style={{
+                  background: `radial-gradient(circle at 50% 50%, ${transitioningChar.colorFrom}88 0%, transparent 65%)`
+                }}
+              />
+
+              <div className="relative z-10 w-full max-w-xl px-6 flex flex-col items-center select-none">
+                {/* Meta secure dossier details */}
+                <div className="flex items-center gap-3 mb-6" style={{ fontFamily: "Orbitron, sans-serif", fontSize: 10, letterSpacing: "0.25em" }}>
+                  <span style={{ color: "rgba(255,255,255,0.3)" }}>SECURE DOSSIER TERMINAL</span>
+                  <span style={{ color: transitioningChar.colorFrom }}>● ACTIVE CONNECT</span>
+                </div>
+
+                {/* Massive Glitch-styled Custom Name */}
+                <motion.h1
+                  style={{
+                    fontFamily: "Orbitron, sans-serif",
+                    fontWeight: 900,
+                    fontStyle: "italic",
+                    fontSize: "clamp(2.5rem, 8vw, 5.5rem)",
+                    letterSpacing: "0.08em",
+                    color: "#fff",
+                    textShadow: `0 0 24px ${transitioningChar.colorFrom}ee, 0 0 45px ${transitioningChar.colorFrom}55`,
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    lineHeight: 1,
+                    marginBottom: 10
+                  }}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 130, damping: 11 }}
+                >
+                  {transitioningChar.name}
+                </motion.h1>
+
+                {/* Role text */}
+                <p
+                  style={{
+                    fontFamily: "Menlo, monospace",
+                    fontSize: "clamp(9px, 1.5vw, 11px)",
+                    letterSpacing: "0.15em",
+                    color: "rgba(255,255,255,0.4)",
+                    textTransform: "uppercase",
+                    marginBottom: 35
+                  }}
+                >
+                  {transitioningChar.role}
+                </p>
+
+                {/* Decrypting Progress Bar */}
+                <div className="w-full max-w-xs mb-8">
+                  <div className="flex justify-between items-center mb-2" style={{ fontFamily: "Menlo, monospace", fontSize: 9, color: "rgba(255,255,255,0.4)" }}>
+                    <span className="tracking-wider">DECRYPTING PROFILE METRICS...</span>
+                    <span style={{ color: transitioningChar.colorFrom }}>{progress}%</span>
+                  </div>
+                  <div className="h-[2px] w-full bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full"
+                      style={{ background: transitioningChar.gradient }}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ ease: "easeInOut" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Live digital terminal output streaming logs */}
+                <div 
+                  className="w-full bg-black/55 border border-white/5 rounded-xl p-4 font-mono text-[9px] sm:text-[11px] leading-relaxed text-left flex flex-col gap-2 h-32 overflow-hidden"
+                  style={{
+                    boxShadow: "inset 0 4px 20px rgba(0,0,0,0.95)",
+                    backdropFilter: "blur(12px)"
+                  }}
+                >
+                  {terminalLogs.map((log, index) => (
+                    <motion.div 
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.1 }}
+                      style={{ color: index === terminalLogs.length - 1 ? transitioningChar.colorFrom : "rgba(255,255,255,0.4)" }}
+                    >
+                      {log}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
   );
 }

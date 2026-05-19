@@ -9,7 +9,11 @@ const CHAR_COLORS = [
   { from: "#EC4899", to: "#60A5FA", initials: "AS" },
 ];
 
-export default function SplashScreen() {
+interface SplashScreenProps {
+  onComplete?: () => void;
+}
+
+export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [, setLocation] = useLocation();
   const [progress, setProgress] = useState(0);
 
@@ -19,14 +23,20 @@ export default function SplashScreen() {
         const next = prev + Math.floor(Math.random() * 12) + 5;
         if (next >= 100) {
           clearInterval(timer);
-          setTimeout(() => setLocation("/home"), 600);
+          setTimeout(() => {
+            if (onComplete) {
+              onComplete();
+            } else {
+              setLocation("/home");
+            }
+          }, 600);
           return 100;
         }
         return next;
       });
     }, 120);
     return () => clearInterval(timer);
-  }, [setLocation]);
+  }, [setLocation, onComplete]);
 
   return (
     <motion.div
