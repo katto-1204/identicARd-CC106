@@ -10,7 +10,20 @@ export default function CharacterProfilePage() {
   const { slug } = useParams();
   const character = characters.find((c) => c.slug === slug);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isCardStraight, setIsCardStraight] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleCardMouseEnter = () => {
+    hoverTimeout.current = setTimeout(() => {
+      setIsCardStraight(true);
+    }, 3000);
+  };
+
+  const handleCardMouseLeave = () => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    setIsCardStraight(false);
+  };
 
   if (!character) return <Redirect to="/home" />;
 
@@ -119,18 +132,27 @@ export default function CharacterProfilePage() {
         </div>
 
         {/* Character viewer */}
-        <div className="relative z-10 w-full flex justify-center items-center" style={{ maxWidth: 520, minHeight: 400 }}>
+        <div
+          className="relative z-10 w-full flex justify-center items-center select-none"
+          style={{ maxWidth: 520, minHeight: 400, WebkitTouchCallout: "none" }}
+          onMouseEnter={handleCardMouseEnter}
+          onMouseLeave={handleCardMouseLeave}
+          onTouchStart={handleCardMouseEnter}
+          onTouchEnd={handleCardMouseLeave}
+          onContextMenu={(e) => e.preventDefault()}
+        >
           {/* Card behind the model with CSS 3D tilt */}
           {(character as any).cardImage && (
-            <img 
-              src={(character as any).cardImage} 
-              alt={`${character.name} Card`} 
+            <img
+              src={(character as any).cardImage}
+              alt={`${character.name} Card`}
               className="absolute z-0 w-full max-w-[280px] lg:max-w-[340px] rounded-2xl shadow-2xl"
-              style={{ 
-                top: "50%", 
-                transform: "translateY(-50%) perspective(1000px) rotateX(30deg) scale(0.95)", 
+              style={{
+                top: "50%",
+                transform: `translateY(${isCardStraight ? "-55%" : "-50%"}) perspective(1000px) rotateX(${isCardStraight ? 0 : 30}deg) scale(0.95)`,
                 border: `1px solid ${character.colorBorder}`,
-                transformOrigin: "bottom" 
+                transformOrigin: "bottom",
+                transition: "transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)"
               }}
             />
           )}
@@ -231,13 +253,13 @@ export default function CharacterProfilePage() {
                       background: isPrimary
                         ? character.gradient
                         : isAccent
-                        ? `linear-gradient(135deg, ${character.colorFrom}33, ${character.colorTo}22)`
-                        : "rgba(255,255,255,0.04)",
+                          ? `linear-gradient(135deg, ${character.colorFrom}33, ${character.colorTo}22)`
+                          : "rgba(255,255,255,0.04)",
                       border: isPrimary
                         ? "none"
                         : isAccent
-                        ? `1px solid ${character.colorBorder}`
-                        : "1px solid rgba(255,255,255,0.07)",
+                          ? `1px solid ${character.colorBorder}`
+                          : "1px solid rgba(255,255,255,0.07)",
                       padding: "14px 16px",
                     }}
                     initial={{ opacity: 0, y: 12 }}
@@ -262,8 +284,8 @@ export default function CharacterProfilePage() {
                           background: isPrimary
                             ? "rgba(255,255,255,0.2)"
                             : isAccent
-                            ? `${character.colorFrom}33`
-                            : "rgba(255,255,255,0.06)",
+                              ? `${character.colorFrom}33`
+                              : "rgba(255,255,255,0.06)",
                           color: isPrimary ? "#fff" : character.colorFrom,
                         }}
                       >
